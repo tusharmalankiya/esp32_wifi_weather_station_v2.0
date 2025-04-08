@@ -19,6 +19,7 @@
 #define CLEAR_SKY_ICON "https://cdn-icons-png.flaticon.com/512/3222/3222800.png"
 #define RAIN_ICON "https://cdn-icons-png.flaticon.com/512/1312/1312359.png"
 #define CLOUD_ICON "https://cdn-icons-png.flaticon.com/512/4834/4834559.png"
+#define UNKNOWN_ICON "https://cdn-icons-png.flaticon.com/512/5829/5829172.png"
 
 // global variables
 float temperature = 0.0;
@@ -224,6 +225,7 @@ void updateWeather()
       {
         // display.setCursor(100, 0);
         display.print("?");
+        png_icon = UNKNOWN_ICON;
       }
       // --------code for bitmap icon - end---------------------------------
       display.print("\n\nLast updated: ");
