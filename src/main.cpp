@@ -11,6 +11,7 @@
 #include "espwebserver.h"
 #include "secrets.h"
 #include "icons.h"
+#include "logToGoogleSheets.h"
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
@@ -98,10 +99,13 @@ void setup()
   server.addHandler(&events); // Register SSE handler
   server.begin();
   Serial.println("Connect Web Server at http://localhost:80");
+
+  // updateWeather();
+  logToGoogleSheetSetUp();
 }
 
 unsigned long previousWeatherMillis = 0;
-const unsigned long weatherUpdateInterval = 30000; // 30 seconds
+const unsigned long weatherUpdateInterval = 3000; // 30 seconds
 
 void loop()
 {
@@ -113,8 +117,10 @@ void loop()
     if (currentMillis - previousWeatherMillis >= weatherUpdateInterval || previousWeatherMillis == 0)
     {
       previousWeatherMillis = currentMillis;
-      // Call your weather update function here
+
+      // Calling weather update function
       updateWeather();
+      logToGoogleSheet(updated, temperature, humidity, weather);
       sendWeatherUpdate(png_icon, temperature, humidity, weather, updated);
     }
   }
@@ -186,7 +192,8 @@ void updateWeather()
       display.clearDisplay();
       display.setCursor(0, 0);
       display.setTextSize(1);
-      display.println("Weather in " + String(CITY));
+      display.print("Weather in ");
+      display.println(String(CITY));
       display.println("---------------------");
       display.setTextSize(1);
       display.print("Temp: ");
@@ -199,7 +206,8 @@ void updateWeather()
       // getting current coordinates for the next line
       uint16_t y;
       y = display.getCursorY();
-      String label = "Condition: " + String(weather);
+      String label = "Condition: ";
+      label += String(weather);
       display.print(label);
 
       int16_t x1, y1;

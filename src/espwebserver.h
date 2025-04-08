@@ -99,6 +99,8 @@ const String htmlTemplate = R"(
 <script>
   const evtSource = new EventSource("/events");
 
+  // const scriptURL = "https://script.google.com/macros/s/AKfycbzAODnYYjxuA5RcThsR96mha9Sn0DtNMZgjf42avk_12WklhtpphMPJjUzvZagWoQ1aOg/exec";
+
   evtSource.addEventListener("weatherUpdate", function (e) {
     const data = JSON.parse(e.data);
     document.getElementsByClassName("icon")[0].src = data.png;
@@ -106,6 +108,16 @@ const String htmlTemplate = R"(
     document.getElementsByClassName("humidity")[0].innerText = "Humidity: " + data.humidity + "%";
     document.getElementsByClassName("condition")[0].innerText = data.condition;
     document.getElementsByClassName("last-updated")[0].innerText = "Last Updated: " + data.updated;
+
+    // fetch(`${scriptURL}?updated=${data.updated}&temp=${data.temp}&humidity=${data.humidity}&condition=${data.condition}`)
+    // .then(response => response.text())
+    // .then(data => {
+    //     console.log("Server Response: ", data);
+    // })
+    // .catch(error =>{
+    //     console.log("Error: ", error);
+    // });
+
 });
 
 </script>
